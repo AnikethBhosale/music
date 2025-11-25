@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Music Server{% endblock %}</title>
+    <title>{% block title %}MusicVault{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header>
-        <h1>Music Server</h1>
+        <h1>MusicVault</h1>
+        <p style="margin: 0 ; font-size: 1.4em; color: #666; font-style: italic;">Aniketh's personal music server</p>
         <nav>
             <ul>
                 <li><a href="{% url 'music:home' %}">Home</a></li>
