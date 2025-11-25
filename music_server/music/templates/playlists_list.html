@@ -12,7 +12,7 @@
     </tr>
     {% for playlist in playlists %}
     <tr>
-        <td>{{ playlist.name }}</td>
+        <td><a href="{% url 'music:playlist_details' playlist.pk %}">{{ playlist.name }}</a></td>
         <td>{{ playlist.created_at }}</td>
         <td>{{ playlist.description }}</td>
     </tr>
