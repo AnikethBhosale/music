@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Songs List{% endblock %}
+
+{% block content %}
+<h2>Songs List</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Uploaded At</th>
+        <th>Duration</th>
+        <th>Cover Image</th>
+    </tr>
+    {% for song in songs %}
+    <tr>
+        <td>{{ song.title }}</td>
+        <td>{{ song.uploaded_at }}</td>
+        <td>{{ song.duration }}</td>
+        <td>
+            {% if song.cover_image %}
+                <img src="{{ song.cover_image.url }}" alt="Cover Image" width="100">
+            {% else %}
+                <div style="width: 100px; height: 100px; background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #666; font-size: 12px; border: 1px solid #ccc;">
+                   No Cover
+                </div>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
