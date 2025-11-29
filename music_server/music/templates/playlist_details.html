@@ -20,7 +20,7 @@
         <td>{{ song.title }}</td>
         <td>{{ song.duration }}</td>
         <td>
-            <a href="#">Play</a>
+            <a href="{% url 'music:player' song.id %}?source=playlist&playlist_id={{ playlist.id }}">Play</a>
         </td>
     </tr>
     {% empty %}

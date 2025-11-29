@@ -9,6 +9,7 @@
         <th>Uploaded At</th>
         <th>Duration</th>
         <th>Cover Image</th>
+        <th>Actions</th>
     </tr>
     {% for song in songs %}
     <tr>
@@ -23,6 +24,9 @@
                    No Cover
                 </div>
             {% endif %}
+        </td>
+        <td>
+            <a href="{% url 'music:player' song.id %}?source=library">Play</a>
         </td>
     </tr>
     {% endfor %}

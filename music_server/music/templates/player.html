@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Now Playing - {{ current_song.title }}{% endblock %}
+
+{% block extra_head %}
+<script src="{% static 'js/player.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="player-container">
+    <!-- Current Song Display -->
+    <div class="now-playing">
+        <h2>Now Playing</h2>
+        <div class="song-info">
+            <div class="cover-art">
+                {% if current_song.cover_image %}
+                    <img src="{{ current_song.cover_image.url }}" alt="{{ current_song.title }}" id="cover-image">
+                {% else %}
+                    <div class="no-cover" id="cover-image">♪</div>
+                {% endif %}
+            </div>
+            <div class="song-details">
+                <h3 id="song-title">{{ current_song.title }}</h3>
+                <p id="context-info">Playing from: {{ context_info.name }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <audio id="audio-element" preload="auto">
+            <source src="{{ current_song.audio_file.url }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <span id="current-time">0:00</span>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span id="total-duration">{{ current_song.duration|default:"0:00" }}</span>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls">
+            <button id="shuffle-btn" class="control-btn" title="Shuffle">
+                <span>🔀</span>
+            </button>
+            <button id="prev-btn" class="control-btn" title="Previous">
+                <span>⏮</span>
+            </button>
+            <button id="play-pause-btn" class="control-btn primary" title="Play/Pause">
+                <span id="play-icon">▶️</span>
+            </button>
+            <button id="next-btn" class="control-btn" title="Next">
+                <span>⏭</span>
+            </button>
+            <button id="repeat-btn" class="control-btn" title="Repeat: Off">
+                <span id="repeat-icon">🔁</span>
+            </button>
+        </div>
+
+        <!-- Volume Control -->
+        <div class="volume-control">
+            <span>🔊</span>
+            <input type="range" id="volume-slider" min="0" max="100" value="100">
+        </div>
+    </div>
+
+    <!-- Queue Display -->
+    <div class="queue-panel">
+        <h3>Queue ({{ queue|length }} songs)</h3>
+        <div class="queue-list" id="queue-list">
+            {% for song in queue %}
+            <div class="queue-item {% if forloop.counter0 == current_index %}active{% endif %}" data-song-id="{{ song.id }}" data-index="{{ forloop.counter0 }}">
+                <span class="queue-number">{{ forloop.counter }}</span>
+                <div class="queue-song-info">
+                    <span class="queue-title">{{ song.title }}</span>
+                    <span class="queue-duration">{{ song.duration|default:"--:--" }}</span>
+                </div>
+                {% if forloop.counter0 == current_index %}
+                <span class="now-playing-indicator">▶</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Pass queue data to JavaScript -->
+<script type="text/javascript">
+    // Data from Django backend
+    window.queueData = JSON.parse('{{ queue_data_json|escapejs }}');
+    window.currentIndex = parseInt('{{ current_index }}');
+</script>
+{% endblock %}
